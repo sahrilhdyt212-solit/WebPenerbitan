@@ -1,0 +1,515 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ karya.judul }} - Sosial Literasi Journal</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ho-navy: #002d57;
+            --ho-accent: #e31e24;
+            --bg-gray: #ffffff;
+            --jurnal-green: #28a745;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-gray);
+            color: #222;
+            line-height: 1.8;
+        }
+
+        /* 1. CSS PROGRESS BAR */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+        .progress-bar {
+            height: 4px;
+            background: var(--ho-accent);
+            width: 0%;
+        }
+
+        /* TOAST NOTIFICATION STYLING */
+        #copyToast {
+            visibility: hidden;
+            min-width: 200px;
+            background-color: var(--ho-navy);
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 12px;
+            position: fixed;
+            z-index: 10000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        #copyToast.show {
+            visibility: visible;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        .top-bar { background-color: var(--ho-navy); height: 5px; }
+
+        /* NAVBAR OPTIMIZATION */
+        .navbar {
+            background-color: #fff !important;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            min-height: 85px;
+        }
+        .solit-logo { height: 65px; width: auto; transition: 0.3s; }
+        .brand-text {
+            border-left: 2px solid #eee;
+            padding-left: 15px;
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            color: var(--ho-navy);
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .nav-link-custom {
+            font-weight: 700;
+            color: var(--ho-navy) !important;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: 0.3s;
+            display: block;
+            padding: 10px 0;
+        }
+        .nav-link-custom:hover { color: var(--ho-accent) !important; }
+
+        .search-icon-btn {
+            color: #666;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+        .search-icon-btn:hover { color: var(--ho-accent); }
+
+        /* SEARCH INPUT DYNAMIC STYLING */
+        .search-input-field {
+            width: 0;
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-radius: 20px;
+            border: 1px solid #eee;
+            padding: 0;
+            pointer-events: none;
+        }
+
+        /* Default state for Desktop */
+        @media (min-width: 768px) {
+            .search-input-field {
+                width: 180px;
+                opacity: 1;
+                padding: 0.25rem 0.75rem;
+                pointer-events: auto;
+                margin-right: 8px;
+            }
+        }
+
+        /* Active state for Mobile */
+        .search-input-field.active {
+            width: 150px;
+            opacity: 1;
+            padding: 0.25rem 0.75rem;
+            pointer-events: auto;
+            margin-right: 8px;
+        }
+
+        /* Article Styling */
+        .article-header { margin-top: 40px; margin-bottom: 30px; }
+        .breadcrumb-item a { color: var(--ho-accent); text-decoration: none; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; }
+        .article-category { color: var(--ho-accent); text-transform: uppercase; font-weight: 700; font-size: 0.9rem; display: block; margin-bottom: 10px; }
+        .article-title { font-family: 'Merriweather', serif; font-size: 2.8rem; font-weight: 700; line-height: 1.2; color: #000; margin-bottom: 20px; }
+
+        .btn-download-pdf {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--jurnal-green);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(40, 167, 69, 0.2);
+        }
+        .btn-download-pdf:hover {
+            background-color: var(--ho-navy);
+            transform: translateY(-2px);
+        }
+
+        .article-meta {
+            font-size: 0.9rem;
+            color: #666;
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .author-name { color: var(--ho-navy); font-weight: 700; text-decoration: none; }
+        .author-name:hover { color: var(--ho-accent); text-decoration: underline; }
+
+        .share-buttons i {
+            margin-left: 15px;
+            color: #999;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .share-buttons i:hover { color: var(--ho-navy); }
+        .share-buttons .fa-link:hover { color: var(--ho-accent); }
+
+        .featured-image-container { margin-bottom: 30px; text-align: center; background: #f9f9f9; padding: 10px; border-radius: 8px; }
+        .featured-image { width: 100%; max-height: 600px; object-fit: contain; }
+        .image-caption { font-size: 0.85rem; color: #777; margin-top: 15px; font-style: italic; border-left: 3px solid var(--ho-accent); padding-left: 10px; text-align: left; }
+
+        .article-content { font-family: 'Merriweather', serif; font-size: 1.2rem; color: #333; text-align: justify; }
+        .article-content p { margin-bottom: 25px; }
+
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+        .related-title { color: var(--ho-navy); text-decoration: none; transition: 0.3s; }
+        .related-title:hover { color: var(--ho-accent); }
+        .sidebar-box { border-top: 3px solid var(--ho-navy); padding: 20px; background: #fff; margin-bottom: 25px; border-bottom: 1px solid #eee; }
+        .footer { background-color: var(--ho-navy); color: #fff; padding: 40px 0; margin-top: 60px; }
+
+        @media (max-width: 991px) {
+            .brand-text { border-left: 1px solid #eee; padding-left: 10px; font-size: 0.9rem; }
+            .brand-text span { display: none; }
+            .solit-logo { height: 45px; }
+            .navbar { min-height: 70px; }
+            .nav-link-custom { border-bottom: 1px solid #f8f9fa; }
+        }
+
+        @media (max-width: 768px) {
+            .article-title { font-size: 1.9rem; line-height: 1.3; }
+            .article-meta { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .share-buttons { width: 100%; display: flex !important; justify-content: space-between; border-top: 1px dashed #eee; padding-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+
+    <div id="copyToast">Tautan Berhasil Disalin!</div>
+
+    <div class="top-bar"></div>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <img src="{% static 'logo_solit.png' %}" alt="Logo SOLIT" class="solit-logo">
+                <div class="brand-text">
+                    SOSIAL LITERASI<br>
+                    <span style="font-size: 0.7rem; font-family: 'Roboto', sans-serif; font-weight: 400; color: #666;">Journal & Literature</span>
+                </div>
+            </a>
+
+            <div class="d-flex align-items-center ms-auto order-lg-last">
+                <form action="{% url 'home' %}" method="GET" class="d-flex align-items-center" id="searchForm">
+                    <input type="text" name="q" id="searchInput" placeholder="Cari..." class="form-control form-control-sm search-input-field">
+                    <button type="button" class="search-icon-btn me-2" id="searchBtn">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </form>
+
+                <button class="navbar-toggler border-0 p-1" type="button" data-bs-toggle="collapse" data-bs-target="#solitNav" aria-controls="solitNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars" style="color: var(--ho-navy); font-size: 1.4rem;"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="solitNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-4 me-lg-4">
+                    <li class="nav-item">
+                        <a href="{% url 'home' %}" class="nav-link-custom">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'daftar_jurnal' %}" class="nav-link-custom">Arsip Jurnal</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'daftar_draft' %}" class="nav-link-custom" style="color: var(--ho-accent) !important;">Draf</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item d-none d-xl-block">
+                        <div class="date-now small text-muted fw-bold border-start ps-3" style="font-size: 0.75rem;">
+                            {{ "now"|date:"l, d F Y" }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <header class="article-header">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ karya.get_kategori_display }}</li>
+                        </ol>
+                    </nav>
+
+                    <span class="article-category">{{ karya.get_kategori_display }}</span>
+                    <h1 class="article-title">{{ karya.judul }}</h1>
+                    
+                    {% if karya.file_pdf %}
+                    <a href="{{ karya.file_pdf.url }}" class="btn-download-pdf shadow-sm" target="_blank">
+                        <i class="fa-solid fa-file-pdf me-2"></i> UNDUH NASKAH LENGKAP (PDF)
+                    </a>
+                    {% endif %}
+
+                    <div class="article-meta">
+                        <div>
+                            Oleh
+                            {% if karya.penulis_user %}
+                                <a href="{% url 'profil_penulis' karya.penulis_user.username %}" class="author-name">
+                                    {{ karya.penulis }}
+                                </a>
+                            {% else %}
+                                <span class="author-name">{{ karya.penulis }}</span>
+                            {% endif %}
+                            —
+                            <span class="text-muted">{{ karya.tanggal_terbit|date:"d F Y | H:i" }} WIB</span>
+                        </div>
+                        <div class="share-buttons">
+                            <i class="fa-brands fa-facebook-f"></i>
+                            <i class="fa-brands fa-twitter"></i>
+                            <i class="fa-brands fa-whatsapp" onclick="shareWhatsApp()"></i>
+                            <i class="fa-solid fa-link" onclick="copyToClipboard()" title="Salin Tautan"></i>
+                        </div>
+                    </div>
+                </header>
+
+                {% if karya.gambar %}
+                <div class="featured-image-container">
+                    <img src="{{ karya.gambar.url }}" alt="{{ karya.judul }}" class="featured-image shadow-sm">
+                    <p class="image-caption">Gambar: Dokumen pribadi penulis untuk Sosial Literasi Journal.</p>
+                </div>
+                {% endif %}
+
+                <article class="article-content">
+                    {{ karya.isi|safe }}
+                </article>
+
+                <div class="mt-5 pt-4 border-top">
+                    <h5 class="fw-bold mb-4" style="color: var(--ho-navy); border-left: 4px solid var(--ho-accent); padding-left: 15px;">DISKUSI ({{ komentar_list.count }})</h5>
+                    
+                    <div class="card border-0 bg-light mb-4 shadow-sm">
+                        <div class="card-body p-4">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label class="small fw-bold text-muted">NAMA</label>
+                                    <input type="text" name="nama" class="form-control border-0 shadow-sm" placeholder="Masukkan nama Anda..." required style="border-radius: 8px;">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="small fw-bold text-muted">KOMENTAR</label>
+                                    <textarea name="isi" class="form-control border-0 shadow-sm" rows="3" placeholder="Tuliskan pendapat atau argumen Anda..." required style="border-radius: 8px;"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary px-4 fw-bold" style="background-color: var(--ho-navy); border: none; border-radius: 25px; font-size: 0.85rem;">
+                                    <i class="fa-solid fa-paper-plane me-2"></i> KIRIM KOMENTAR
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="komentar-wrapper">
+                        {% for komen in komentar_list %}
+                        <div class="mb-4 pb-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6 class="fw-bold mb-0" style="color: var(--ho-navy);"><i class="fa-solid fa-circle-user me-2"></i>{{ komen.nama }}</h6>
+                                <small class="text-muted">{{ komen.tanggal_tambah|date:"d M Y" }}</small>
+                            </div>
+                            <p class="mb-0 text-secondary" style="font-size: 1rem; line-height: 1.6;">{{ komen.isi }}</p>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-4 text-muted">
+                            <i class="fa-solid fa-comments mb-2" style="font-size: 2rem; opacity: 0.3;"></i>
+                            <p class="small italic">Belum ada diskusi di naskah ini.</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% if baca_juga %}
+                <div class="mt-5 pt-4 border-top">
+                    <h5 class="fw-bold mb-4" style="color: var(--ho-navy); border-left: 4px solid var(--ho-accent); padding-left: 15px;">BACA JUGA</h5>
+                    <div class="row g-4">
+                        {% for related in baca_juga %}
+                            {% if not related.file_pdf %}
+                            <div class="col-md-4 col-sm-6">
+                                <div class="card h-100 border-0 shadow-sm related-card">
+                                    {% if related.gambar %}
+                                    <img src="{{ related.gambar.url }}" class="card-img-top" alt="{{ related.judul }}" style="height: 180px; object-fit: cover;">
+                                    {% endif %}
+                                    <div class="card-body p-3">
+                                        <a href="{% url 'detail_karya' related.id %}" class="related-title fw-bold d-block">
+                                            {{ related.judul|truncatewords:10 }}
+                                        </a>
+                                        <div class="text-muted small mt-2">{{ related.tanggal_terbit|date:"d M Y" }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="mt-5 pt-4 border-top">
+                    <a href="{% url 'home' %}" class="btn btn-outline-dark btn-sm shadow-sm" style="border-radius: 0; font-weight: 700;">
+                        <i class="fa-solid fa-arrow-left me-2"></i> KEMBALI KE INDEKS
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mt-5">
+                <div class="sidebar-box shadow-sm">
+                    <h6 class="fw-bold mb-3" style="color: var(--ho-navy); border-left: 4px solid var(--ho-accent); padding-left: 10px;">TERPOPULER</h6>
+                    <ul class="list-unstyled small">
+                        {% for pop in terpopuler %}
+                        <li class="mb-3 {% if not forloop.first %}border-top pt-2{% endif %}">
+                            <a href="{% url 'detail_karya' pop.id %}" class="text-dark text-decoration-none fw-bold h6 d-block">
+                                {{ pop.judul }}
+                            </a>
+                            <span class="text-muted small">{{ pop.tanggal_terbit|date:"d F Y" }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <p class="mb-1" style="letter-spacing: 2px;"><strong>SOSIAL LITERASI JOURNAL</strong></p>
+            <p class="small text-white-50">Bagian dari ekosistem Reaverse Intelektual</p>
+            <hr style="border-color: rgba(255,255,255,0.1); width: 30%; margin: 20px auto;">
+            <p class="small mb-0 opacity-50">&copy; 2026. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // LOGIKA SEARCH BAR (MOBILE & DESKTOP FRIENDLY)
+        const searchBtn = document.getElementById('searchBtn');
+        const searchInput = document.getElementById('searchInput');
+        const searchForm = document.getElementById('searchForm');
+
+        searchBtn.addEventListener('click', function(e) {
+            const isMobile = window.innerWidth < 768;
+            
+            if (isMobile) {
+                // Di Mobile: klik pertama buka input, klik kedua submit jika ada teks
+                if (!searchInput.classList.contains('active')) {
+                    searchInput.classList.add('active');
+                    searchInput.focus();
+                } else {
+                    if (searchInput.value.trim() !== "") {
+                        searchForm.submit();
+                    } else {
+                        searchInput.classList.remove('active');
+                    }
+                }
+            } else {
+                // Di Laptop: Langsung submit jika ada teks
+                if (searchInput.value.trim() !== "") {
+                    searchForm.submit();
+                } else {
+                    searchInput.focus();
+                }
+            }
+        });
+
+        // Submit saat tekan Enter di keyboard mana pun
+        searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (searchInput.value.trim() !== "") {
+                    searchForm.submit();
+                }
+            }
+        });
+
+        // Close search input if clicked outside (Mobile)
+        document.addEventListener('click', function(e) {
+            if (!searchForm.contains(e.target) && window.innerWidth < 768) {
+                searchInput.classList.remove('active');
+            }
+        });
+
+        // PROGRESS BAR SCRIPT
+        window.onscroll = function() { updateProgressBar() };
+        function updateProgressBar() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            var elem = document.getElementById("myBar");
+            if (elem) { elem.style.width = scrolled + "%"; }
+        }
+
+        // COPY TO CLIPBOARD SCRIPT
+        function copyToClipboard() {
+            var dummy = document.createElement('input'), text = window.location.href;
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            var toast = document.getElementById("copyToast");
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        // WHATSAPP SHARE SCRIPT
+        function shareWhatsApp() {
+            var url = window.location.href;
+            var text = "Baca artikel menarik ini di Sosial Literasi Journal: ";
+            window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(text + url));
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if edit_mode %}Edit Naskah{% else %}Tulis Baru{% endif %} - Sosial Literasi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    {{ form.media }}
+
+    <style>
+        :root { --navy: #002d57; --accent: #e31e24; --bg: #f8fafc; }
+        body { background-color: var(--bg); font-family: 'Inter', sans-serif; }
+        
+        .navbar-custom { background: white; border-bottom: 1px solid #e2e8f0; padding: 1rem 0; }
+        .nav-link { color: var(--navy) !important; font-weight: 600; margin: 0 10px; }
+        
+        .form-card { background: white; border-radius: 12px; padding: 2.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-top: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        
+        .form-group input, .form-group select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #cbd5e1; 
+            border-radius: 8px; 
+        }
+
+        .django-ckeditor-widget {
+            display: block !important;
+            width: 100% !important;
+        }
+        
+        .btn-publish { background: var(--navy); color: white; border: none; padding: 12px 25px; border-radius: 8px; font-weight: 600; }
+        .btn-draft { background: transparent; color: var(--navy); border: 1px solid var(--navy); padding: 12px 25px; border-radius: 8px; font-weight: 600; }
+
+        /* Style tambahan untuk checkbox */
+        .checkbox-group {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px dashed var(--navy);
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar-custom">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a href="{% url 'home' %}" style="text-decoration:none; font-weight:800; color:var(--navy); font-size:1.5rem;">SOSIAL LITERASI</a>
+        <div>
+            <a href="{% url 'home' %}" class="nav-link d-inline">Home</a>
+            <a href="{% url 'daftar_draft' %}" class="nav-link d-inline" style="color: var(--accent) !important;">Draft Saya</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="form-card mx-auto" style="max-width: 800px;">
+        <h2 class="mb-4">{% if edit_mode %}Lanjutkan Menulis{% else %}Tulis Gagasan Baru{% endif %}</h2>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label class="fw-bold mb-2">Judul Artikel/Jurnal</label>
+                {{ form.judul }}
+                {% if form.judul.errors %}<small class="text-danger">{{ form.judul.errors }}</small>{% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="fw-bold mb-2">Penulis</label>
+                {{ form.penulis }}
+            </div>
+
+            <div class="form-group">
+                <label class="fw-bold mb-2">Kategori Hukum</label>
+                {{ form.kategori }}
+            </div>
+
+            <div class="form-group">
+                <label class="fw-bold mb-2">Isi Naskah / Abstrak</label>
+                {{ form.isi }}
+                {% if form.isi.errors %}<small class="text-danger">{{ form.isi.errors }}</small>{% endif %}
+            </div>
+
+            <div class="form-group">
+                <label class="fw-bold mb-2">Unggah Gambar Sampul (Opsional)</label>
+                {{ form.gambar }}
+                <small class="text-muted d-block mt-1">Gunakan gambar yang relevan dengan tema hukum ya.</small>
+            </div>
+
+            <hr class="my-4">
+            <div class="form-group">
+                <label class="fw-bold mb-2 text-primary">📄 Unggah Dokumen PDF (Jika ada)</label>
+                {{ form.file_pdf }}
+                <small class="text-muted d-block mt-1">Jika anda mengunggah PDF, pembaca bisa mengunduhnya langsung di Arsip Jurnal.</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <div class="form-check">
+                    {{ form.is_jurnal_ilmiah }}
+                    <label class="form-check-label fw-bold" for="{{ form.is_jurnal_ilmiah.id_for_label }}">
+                        Tandai sebagai Jurnal Ilmiah Resmi
+                    </label>
+                </div>
+                <small class="text-muted">Centang jika ini merupakan hasil penelitian atau naskah akademik formal.</small>
+            </div>
+            
+            <div class="d-flex gap-3 mt-4">
+                <button type="submit" name="action" value="publish" class="btn-publish flex-grow-1">Terbitkan Sekarang</button>
+                <button type="submit" name="action" value="draft" class="btn-draft">Simpan ke Draft</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

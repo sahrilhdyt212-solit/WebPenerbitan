@@ -1,0 +1,484 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sosial Literasi Journal - Pusat Data Hukum Progresif</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ho-navy: #002d57; 
+            --ho-accent: #e31e24; 
+            --bg-gray: #f4f4f4;
+        }
+
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background-color: var(--bg-gray);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .top-bar {
+            background-color: var(--ho-navy);
+            height: 5px;
+        }
+
+        /* --- NAVBAR OPTIMIZATION --- */
+        .navbar {
+            background-color: #fff !important;
+            border-bottom: 1px solid #eee;
+            padding: 5px 0; /* Lebih compact */
+            min-height: 70px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+
+        .solit-logo {
+            height: 55px; /* Sedikit lebih kecil agar rapi di HP */
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        .brand-text {
+            border-left: 2px solid #eee;
+            padding-left: 12px;
+            margin-left: 12px;
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            color: var(--ho-navy);
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .brand-subtext {
+            font-size: 0.65rem; 
+            font-family: 'Roboto', sans-serif; 
+            font-weight: 400; 
+            color: #777;
+            display: block; /* Memastikan teks ini tidak hilang */
+        }
+
+        .nav-link-custom {
+            font-weight: 700;
+            color: var(--ho-navy) !important;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            transition: 0.3s;
+            padding: 8px 12px !important;
+            position: relative;
+        }
+
+        .nav-link-custom::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 12px;
+            width: 0;
+            height: 2px;
+            background: var(--ho-accent);
+            transition: 0.3s;
+        }
+
+        .nav-link-custom:hover::after {
+            width: calc(100% - 24px);
+        }
+
+        .nav-link-custom:hover {
+            color: var(--ho-accent) !important;
+        }
+
+        .btn-post {
+            background-color: var(--ho-navy);
+            color: white !important;
+            border-radius: 4px;
+            font-weight: 700;
+            padding: 8px 18px !important;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--ho-navy);
+            text-transform: uppercase;
+        }
+
+        .btn-post:hover {
+            background-color: transparent !important;
+            color: var(--ho-navy) !important;
+            border: 1px solid var(--ho-navy);
+        }
+
+        /* --- CONTENT & CARDS --- */
+        .main-container {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--ho-navy);
+            display: inline-block;
+            margin-bottom: 25px;
+            padding-bottom: 5px;
+            font-weight: 700;
+            color: var(--ho-navy);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .article-card {
+            background: #fff;
+            border: none;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        .article-image-wrapper {
+            width: 100%;
+            height: 350px; 
+            overflow: hidden;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            background-color: #f8fafc;
+            border: 1px solid #f0f0f0;
+        }
+
+        .article-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            transition: transform 0.6s ease;
+        }
+
+        .article-card:hover .article-image-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .category-tag {
+            color: var(--ho-accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        .article-title {
+            font-family: 'Merriweather', serif;
+            font-size: 1.7rem;
+            color: #111;
+            text-decoration: none;
+            line-height: 1.3;
+            display: block;
+            margin-bottom: 12px;
+            transition: 0.3s;
+        }
+
+        .article-title:hover {
+            color: var(--ho-navy);
+        }
+
+        .article-meta {
+            font-size: 0.85rem;
+            color: #777;
+            margin-bottom: 15px;
+        }
+
+        .article-excerpt {
+            color: #555;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .btn-read {
+            color: var(--ho-navy);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--ho-navy);
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .btn-read:hover {
+            color: var(--ho-accent);
+            border-bottom-color: var(--ho-accent);
+            padding-left: 8px;
+        }
+
+        .sidebar-box {
+            background: #fff;
+            padding: 25px;
+            border-top: 4px solid var(--ho-navy);
+            margin-bottom: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .sidebar-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            color: var(--ho-navy);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .footer {
+            background-color: var(--ho-navy);
+            color: #fff;
+            padding: 60px 0;
+            margin-top: 80px;
+        }
+
+        .category-link {
+            transition: all 0.2s ease;
+            display: block;
+            padding: 8px 0;
+        }
+        .category-link.active {
+            color: var(--ho-accent) !important;
+            font-weight: 800 !important;
+            padding-left: 10px;
+        }
+
+        /* --- MOBILE RESPONSIVE FIX --- */
+        @media (max-width: 991px) {
+            .solit-logo { height: 45px; }
+            .brand-text { font-size: 0.95rem; margin-left: 10px; padding-left: 10px; }
+            .brand-subtext { font-size: 0.6rem; }
+            .navbar-collapse {
+                background: #fff;
+                margin-top: 10px;
+                padding: 15px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            .nav-link-custom { border-bottom: 1px solid #f5f5f5; padding: 10px 0 !important; }
+            .nav-link-custom::after { display: none; }
+            .btn-post { margin-top: 10px; width: 100%; text-align: center; }
+        }
+
+        @media (max-width: 768px) {
+            .article-image-wrapper { height: 220px; }
+            .article-title { font-size: 1.4rem; }
+            /* Perbaikan: Jangan sembunyikan slogan lagi */
+        }
+    </style>
+</head>
+<body>
+
+{% if messages %}
+    <div style="position: fixed; top: 20px; right: 20px; z-index: 10000; min-width: 300px;">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-lg" role="alert" 
+                 style="background: white; border-left: 5px solid {% if message.tags == 'success' %}#28a745{% else %}#17a2b8{% endif %}; color: #333; padding: 1.2rem; margin-bottom: 10px; border-radius: 10px;">
+                <div class="d-flex align-items-center">
+                    <span style="font-size: 1.2rem; margin-right: 12px;">
+                        {% if message.tags == 'success' %}✅{% else %}ℹ️{% endif %}
+                    </span>
+                    <div style="font-size: 0.9rem; font-weight: 600;">{{ message }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="top-bar"></div>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img src="{% static 'logo_solit.png' %}" alt="Logo SOLIT" class="solit-logo">
+            <div class="brand-text">
+                SOSIAL LITERASI<br>
+                <span class="brand-subtext">Journal & Literature</span>
+            </div>
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <i class="fa-solid fa-bars-staggered" style="color: var(--ho-navy); font-size: 1.3rem;"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'daftar_jurnal' %}">Arsip Jurnal</a></li>
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'daftar_draft' %}" style="color: var(--ho-accent) !important;">Draf Saya</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom text-danger" href="{% url 'logout' %}">Logout</a></li>
+                    <li class="nav-item ps-lg-3">
+                        <a class="btn btn-post" href="{% url 'tambah_karya' %}">
+                            <i class="fa-solid fa-pen-nib me-2"></i>Posting Artikel
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container main-container">
+    <div class="row">
+        <div class="col-lg-8">
+            <span class="section-title">
+                {% if kategori_aktif %}
+                    <i class="fa-solid fa-folder-open me-2"></i>Kategori: {{ kategori_aktif|title }}
+                {% else %}
+                    <i class="fa-solid fa-newspaper me-2"></i>Terbitan Terbaru
+                {% endif %}
+            </span>
+            
+            <div class="p-0"> 
+                {% for karya in karya_list %}
+                <div class="article-card shadow-sm">
+                    {% if karya.gambar %}
+                    <div class="article-image-wrapper">
+                        <img src="{{ karya.gambar.url }}" alt="{{ karya.judul }}">
+                    </div>
+                    {% endif %}
+
+                    <span class="category-tag">{{ karya.get_kategori_display }}</span>
+
+                    <a href="{% url 'detail_karya' karya.id %}" class="article-title">{{ karya.judul }}</a>
+                    
+                    <div class="article-meta">
+                        <i class="fa-regular fa-user me-1"></i> <strong>{{ karya.penulis }}</strong> 
+                        <span class="mx-2">|</span>
+                        <i class="fa-regular fa-calendar me-1"></i> {{ karya.tanggal_terbit|date:"d M Y" }}
+                    </div>
+                    
+                    <div class="article-excerpt">
+                        {{ karya.isi|truncatewords_html:40|safe }}
+                    </div>
+                    
+                    <div>
+                        <a href="{% url 'detail_karya' karya.id %}" class="btn-read">Baca Selengkapnya →</a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="bg-white text-center py-5 shadow-sm rounded-4">
+                    <i class="fa-solid fa-box-open mb-3 text-muted" style="font-size: 3rem; opacity: 0.3;"></i>
+                    <p class="text-muted">Belum ada naskah di kategori ini.</p>
+                    {% if kategori_aktif %}
+                        <a href="{% url 'home' %}" class="btn btn-sm btn-outline-primary px-4 rounded-pill">Lihat Semua Artikel</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="sidebar-box">
+                <h5 class="sidebar-title"><i class="fa-solid fa-circle-info me-2 text-accent"></i>Tentang Jurnal</h5>
+                <p class="small text-muted" style="line-height: 1.8;">
+                    Sosial Literasi Journal adalah platform edukasi hukum dari <strong>Reaverse</strong>. Kami fokus pada penyederhanaan literasi hukum bagi mahasiswa dan publik di Indonesia.
+                </p>
+            </div>
+
+            <div class="sidebar-box">
+                <h5 class="sidebar-title"><i class="fa-solid fa-tags me-2 text-accent"></i>Kategori Hukum</h5>
+                <ul class="list-unstyled small">
+                    <li class="border-bottom">
+                        <a href="?kategori=pidana" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'pidana' %}active{% endif %}">
+                            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Pidana
+                        </a>
+                    </li>
+                    <li class="border-bottom">
+                        <a href="?kategori=perdata" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'perdata' %}active{% endif %}">
+                            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Perdata
+                        </a>
+                    </li>
+                    <li class="border-bottom">
+                        <a href="?kategori=htn" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'htn' %}active{% endif %}">
+                            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Tata Negara
+                        </a>
+                    </li>
+                    <li class="mb-0">
+                        <a href="?kategori=han" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'han' %}active{% endif %}">
+                            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Administrasi Negara
+                        </a>
+                    </li>
+                    
+                    {% if kategori_aktif %}
+                    <li class="mt-4">
+                        <a href="{% url 'home' %}" class="btn btn-sm btn-outline-secondary w-100 rounded-pill" style="font-size: 0.75rem;">
+                            <i class="fa-solid fa-rotate-left me-1"></i>RESET FILTER
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="sidebar-box">
+                <h5 class="sidebar-title"><i class="fa-solid fa-user-shield me-2 text-accent"></i>Status Dashboard</h5>
+                {% if user.is_authenticated %}
+                <div class="d-flex align-items-center p-2 bg-light rounded-3">
+                    <div class="flex-grow-1">
+                        <p class="small text-success mb-0 fw-bold">● Aktif: {{ user.username }}</p>
+                    </div>
+                </div>
+                {% else %}
+                <p class="small text-muted mb-0">Masuk untuk mengelola naskah jurnal.</p>
+                {% endif %}
+            </div>
+
+            <div class="sidebar-box">
+                <h5 class="sidebar-title" style="color: var(--ho-accent);"><i class="fa-solid fa-bullhorn me-2"></i>Berita SOLIT</h5>
+                <ul class="list-unstyled small">
+                    {% for berita in berita_list %}
+                    <li class="mb-3 border-bottom pb-2">
+                        <a href="#" class="text-decoration-none text-dark fw-bold d-block mb-1">{{ berita.judul }}</a>
+                        <div class="text-muted" style="font-size: 0.7rem;"><i class="fa-regular fa-clock me-1"></i>{{ berita.tanggal_post|date:"d M Y" }}</div>
+                    </li>
+                    {% empty %}
+                    <li class="text-muted small italic">Belum ada berita terbaru.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer text-center">
+    <div class="container">
+        <p class="mb-2" style="letter-spacing: 3px;"><strong>SOSIAL LITERASI JOURNAL</strong></p>
+        <p class="small text-white-50">Bagian dari ekosistem Reaverse Intelektual</p>
+        <hr style="border-color: rgba(255,255,255,0.1); width: 150px; margin: 25px auto;">
+        <p class="small mb-0 opacity-50">&copy; 2026. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    setTimeout(function() {
+        let alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            let bsAlert = new bootstrap.Alert(alert);
+            bsAlert.close();
+        });
+    }, 4000);
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "builds": [{
+    "src": "inti_penerbitan/wsgi.py",
+    "use": "@vercel/python"
+  }],
+  "routes": [{
+    "src": "/(.*)",
+    "dest": "inti_penerbitan/wsgi.py"
+  }]
+}

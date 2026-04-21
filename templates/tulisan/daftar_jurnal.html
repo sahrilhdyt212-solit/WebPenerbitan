@@ -1,0 +1,388 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arsip Jurnal - Sosial Literasi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ho-navy: #002d57; 
+            --ho-accent: #e31e24; 
+            --bg-gray: #f4f4f4;
+            --jurnal-green: #28a745;
+        }
+
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background-color: var(--bg-gray);
+            color: #333;
+        }
+
+        .top-bar {
+            background-color: var(--ho-navy);
+            height: 5px;
+        }
+
+        /* NAVBAR OPTIMIZATION */
+        .navbar {
+            background-color: #fff !important;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+            min-height: 85px;
+        }
+
+        .solit-logo {
+            height: 65px; /* Disamakan agar konsisten dengan detail_karya */
+            width: auto;
+            transition: 0.3s;
+        }
+
+        .brand-text {
+            border-left: 2px solid #ddd;
+            padding-left: 15px;
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            color: var(--ho-navy);
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        .nav-link-custom {
+            font-weight: 700;
+            color: var(--ho-navy) !important;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .nav-link-custom:hover, .nav-link-custom.active {
+            color: var(--ho-accent) !important;
+        }
+
+        /* SEARCH BAR STYLING */
+        .search-icon-btn {
+            color: #666;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+        .search-icon-btn:hover { color: var(--ho-accent); }
+
+        .search-input-field {
+            width: 0;
+            opacity: 0;
+            transition: all 0.4s ease;
+            border-radius: 20px;
+            border: 1px solid #eee;
+            padding: 0;
+            pointer-events: none;
+        }
+
+        @media (min-width: 768px) {
+            .search-input-field {
+                width: 180px;
+                opacity: 1;
+                padding: 0.25rem 0.75rem;
+                pointer-events: auto;
+                margin-right: 8px;
+            }
+        }
+
+        .search-input-field.active {
+            width: 150px;
+            opacity: 1;
+            padding: 0.25rem 0.75rem;
+            pointer-events: auto;
+            margin-right: 8px;
+        }
+
+        /* BUTTON POSTING */
+        .btn-post {
+            background-color: var(--ho-navy) !important;
+            color: white !important;
+            border-radius: 4px;
+            font-weight: 700;
+            padding: 8px 20px;
+            font-size: 0.8rem;
+            border: 1px solid var(--ho-navy);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-post:hover {
+            background-color: white !important;
+            color: var(--ho-navy) !important;
+            border: 1px solid var(--ho-navy);
+        }
+
+        /* RESPONSIVE NAVBAR */
+        @media (max-width: 991px) {
+            .brand-text { font-size: 0.9rem; }
+            .brand-text span { display: none; }
+            .solit-logo { height: 45px; }
+            .navbar { min-height: 70px; }
+            .nav-link-custom { padding: 10px 0; border-bottom: 1px solid #f8f9fa; }
+        }
+
+        /* Article Card & Sidebar */
+        .main-container { margin-top: 30px; }
+        .section-title {
+            border-bottom: 2px solid var(--jurnal-green);
+            display: inline-block;
+            margin-bottom: 20px;
+            padding-bottom: 5px;
+            font-weight: 700;
+            color: var(--jurnal-green);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .article-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.4s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .category-tag {
+            color: var(--ho-accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .article-title {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5rem;
+            color: #222;
+            text-decoration: none;
+            line-height: 1.3;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .article-meta { font-size: 0.85rem; color: #666; margin-bottom: 15px; }
+
+        .btn-read {
+            color: var(--ho-navy);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--ho-navy);
+            display: inline-block;
+        }
+
+        .btn-pdf {
+            background-color: #d9534f;
+            color: white !important;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 5px 15px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-left: 15px;
+            border-radius: 4px;
+        }
+
+        .btn-pdf:hover { background-color: var(--ho-navy); }
+
+        .sidebar-box {
+            background: #fff;
+            padding: 20px;
+            border-top: 3px solid var(--ho-navy);
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .footer {
+            background-color: var(--ho-navy);
+            color: #fff;
+            padding: 60px 0;
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+            <img src="{% static 'logo_solit.png' %}" alt="Logo SOLIT" class="solit-logo">
+            <div class="brand-text">
+                SOSIAL LITERASI<br>
+                <span style="font-size: 0.7rem; font-family: 'Roboto', sans-serif; font-weight: 400; color: #666;">Journal & Literature</span>
+            </div>
+        </a>
+        
+        <div class="d-flex align-items-center ms-auto order-lg-last">
+            <form action="{% url 'home' %}" method="GET" class="d-flex align-items-center" id="searchForm">
+                <input type="text" name="q" id="searchInput" placeholder="Cari..." class="form-control form-control-sm search-input-field">
+                <button type="button" class="search-icon-btn me-2" id="searchBtn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+
+            <button class="navbar-toggler border-0 p-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fa-solid fa-bars" style="color: var(--ho-navy); font-size: 1.4rem;"></i>
+            </button>
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-3 me-lg-3">
+                <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom active" href="{% url 'daftar_jurnal' %}">Arsip Jurnal</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'daftar_draft' %}" style="color: var(--ho-accent) !important;">Draf Saya</a></li>
+                <li class="nav-item"><a class="nav-link nav-link-custom text-danger" href="{% url 'logout' %}">Logout</a></li>
+                <li class="nav-item"><a class="btn btn-post ms-lg-2" href="{% url 'tambah_karya' %}">POSTING JURNAL</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link nav-link-custom" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container main-container">
+    <div class="row">
+        <div class="col-lg-8">
+            <span class="section-title">
+                📖 KOLEKSI JURNAL ILMIAH
+            </span>
+            
+            <div class="p-0"> 
+                {% for karya in jurnal_list %}
+                <div class="article-card shadow-sm">
+                    <span class="category-tag">
+                        {{ karya.get_kategori_display }} | <span style="color: var(--jurnal-green);">PDF TERVERIFIKASI</span>
+                    </span>
+
+                    <a href="{% url 'detail_karya' karya.id %}" class="article-title">{{ karya.judul }}</a>
+                    <div class="article-meta">
+                        Oleh <strong>{{ karya.penulis }}</strong> — {{ karya.tanggal_terbit|date:"d M Y" }}
+                    </div>
+                    
+                    <div class="article-excerpt">
+                        {{ karya.isi|truncatewords_html:30|safe }}
+                    </div>
+                    
+                    <div class="mt-3">
+                        <a href="{% url 'detail_karya' karya.id %}" class="btn-read">Baca Abstrak →</a>
+                        {% if karya.file_pdf %}
+                        <a href="{{ karya.file_pdf.url }}" class="btn-pdf" target="_blank">UNDUH JURNAL (PDF)</a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="bg-white text-center py-5 shadow-sm border-top border-3 border-danger">
+                    <p class="text-muted">Saat ini belum ada naskah jurnal PDF yang tersedia.</p>
+                    <a href="{% url 'home' %}" class="btn btn-sm btn-outline-secondary">Kembali ke Beranda</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="sidebar-box shadow-sm">
+                <h5 class="sidebar-title fw-bold" style="color: var(--ho-navy); font-size: 1rem;">Tentang Arsip</h5>
+                <p class="small text-muted" style="line-height: 1.8;">
+                    Halaman ini memuat naskah ilmiah yang telah dilengkapi dengan dokumen PDF resmi dari <strong>Sosial Literasi</strong>.
+                </p>
+            </div>
+
+            <div class="sidebar-box shadow-sm">
+                <h5 class="sidebar-title fw-bold" style="color: var(--ho-navy); font-size: 1rem;">Status Dashboard</h5>
+                {% if user.is_authenticated %}
+                <p class="small text-success">● Login sebagai <strong>{{ user.username }}</strong></p>
+                {% else %}
+                <p class="small text-muted">Login untuk kontribusi naskah.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer text-center">
+    <div class="container">
+        <p class="mb-1" style="letter-spacing: 2px;"><strong>SOSIAL LITERASI JOURNAL</strong></p>
+        <p class="small text-white-50">Ekosistem Reaverse Intelektual</p>
+        <hr style="border-color: rgba(255,255,255,0.1); width: 30%; margin: 20px auto;">
+        <p class="small mb-0 opacity-50">&copy; 2026. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // LOGIKA SEARCH BAR (MOBILE & DESKTOP)
+    const searchBtn = document.getElementById('searchBtn');
+    const searchInput = document.getElementById('searchInput');
+    const searchForm = document.getElementById('searchForm');
+
+    searchBtn.addEventListener('click', function(e) {
+        const isMobile = window.innerWidth < 768;
+        
+        if (isMobile) {
+            if (!searchInput.classList.contains('active')) {
+                searchInput.classList.add('active');
+                searchInput.focus();
+            } else {
+                if (searchInput.value.trim() !== "") {
+                    searchForm.submit();
+                } else {
+                    searchInput.classList.remove('active');
+                }
+            }
+        } else {
+            if (searchInput.value.trim() !== "") {
+                searchForm.submit();
+            } else {
+                searchInput.focus();
+            }
+        }
+    });
+
+    searchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (searchInput.value.trim() !== "") {
+                searchForm.submit();
+            }
+        }
+    });
+
+    // Tutup input jika klik di luar area form (khusus mobile)
+    document.addEventListener('click', function(e) {
+        if (!searchForm.contains(e.target) && window.innerWidth < 768) {
+            searchInput.classList.remove('active');
+        }
+    });
+</script>
+</body>
+</html>
