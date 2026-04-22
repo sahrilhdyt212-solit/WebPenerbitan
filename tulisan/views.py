@@ -81,7 +81,7 @@ def detail_karya(request, id):
             return redirect('detail_karya', id=id)
 
     # MODIFIKASI: Hanya tampilkan komentar yang sudah disetujui (is_approved=True)
-    komentar_list = karya.komentars.filter(is_approved=True).order_by('-tanggal_tambah')
+    komentars_list = karya.komentars.filter(is_approved=True).order_by('-tanggal_tambah')
     
     baca_juga = Karya.objects.filter(
         kategori=karya.kategori, 
@@ -94,7 +94,7 @@ def detail_karya(request, id):
         'karya': karya,
         'baca_juga': baca_juga,
         'terpopuler': terpopuler,
-        'komentar_list': komentar_list,
+        'komentars_list': komentars_list,
     }
     return render(request, 'tulisan/detail_karya.html', context)
 
