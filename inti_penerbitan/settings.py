@@ -5,11 +5,13 @@ Optimized for Neon Postgres and Vercel Deployment.
 
 import os
 import dj_database_url
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # --- SECURITY SETTINGS ---
 SECRET_KEY = 'django-insecure-ht3(&*j1n96@bk%6^i&zuhkgahms95kozpquynb0=uv(w=w_c('
@@ -17,9 +19,7 @@ SECRET_KEY = 'django-insecure-ht3(&*j1n96@bk%6^i&zuhkgahms95kozpquynb0=uv(w=w_c(
 # Biarkan True saat di local, ganti False jika sudah benar-benar production
 DEBUG = True
 
-# Menambahkan domain Vercel dan wildcard biar akses lancar
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '172.20.10.2', '.vercel.app', '*']
-
 
 # --- APPLICATION DEFINITION ---
 INSTALLED_APPS = [
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # WAJIB: Supaya CSS muncul di Vercel
+    'whitenoise.middleware.WhiteNoiseMiddleware', # WAJIB buat Vercel
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,7 +65,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'inti_penerbitan.wsgi.application'
 
-
 # --- DATABASE (NEON POSTGRES) ---
 DATABASES = {
     'default': dj_database_url.config(
@@ -74,23 +73,13 @@ DATABASES = {
     )
 }
 
-
 # --- PASSWORD VALIDATION ---
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
-
 
 # --- INTERNATIONALIZATION ---
 LANGUAGE_CODE = 'en-us'
@@ -98,30 +87,22 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
 # --- STATIC & MEDIA FILES ---
-
-# 1. Tambahkan import ini di bagian atas atau tepat di atas settingan media
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# WhiteNoise untuk optimasi CSS/JS di Vercel
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# 2. Konfigurasi Cloudinary
+# Konfigurasi Cloudinary
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dr9cnsucv',
     'API_KEY': '432311462277711',
     'API_SECRET': 'W_0iLFEoPsn_AFwBbPOvth5m9gU'
 }
 
-# 3. WAJIB: Panggil config secara eksplisit agar CloudinaryField bisa baca cloud_name
+# Panggil config eksplisit agar CloudinaryField lancar
 cloudinary.config( 
   cloud_name = CLOUDINARY_STORAGE['CLOUD_NAME'], 
   api_key = CLOUDINARY_STORAGE['API_KEY'], 
@@ -131,22 +112,6 @@ cloudinary.config(
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
-# Settingan untuk mengumpulkan semua static file ke satu folder (Wajib buat Deployment)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# WhiteNoise storage untuk optimasi pengiriman CSS/JS
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# Setting Media untuk gambar/upload file
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dr9cnsucv',
-    'API_KEY': '432311462277711',
-    'API_SECRET': 'W_0iLFEoPsn_AFwBbPOvth5m9gU'
-}
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-MEDIA_URL = '/media/' # Tambahin ini ya Cil
-
 
 # --- DEFAULT FIELD ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
