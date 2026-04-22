@@ -28,16 +28,16 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
-    'cloudinary',
+    'cloudinary_storage', # Harus di atas staticfiles
     'django.contrib.staticfiles',
-    'ckeditor', # Rich Text Editor
+    'cloudinary', # Library inti Cloudinary
+    'ckeditor', # Rich Text Editor (Fitur Berjalan)
     'tulisan',  # App lo
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # WAJIB buat Vercel
+    'whitenoise.middleware.WhiteNoiseMiddleware', # WAJIB buat Vercel (Fitur Berjalan)
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,7 +65,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'inti_penerbitan.wsgi.application'
 
-# --- DATABASE (NEON POSTGRES) ---
+# --- DATABASE (NEON POSTGRES - Fitur Berjalan) ---
 DATABASES = {
     'default': dj_database_url.config(
         default='postgres://neondb_owner:npg_hqbLd4ASUpG5@ep-billowing-base-aoaunaxx.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require',
@@ -110,9 +110,9 @@ cloudinary.config(
   secure = True
 )
 
+# Gunakan RawMediaCloudinaryStorage agar PDF bisa diunduh
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
 MEDIA_URL = '/media/'
-import cloudinary_storage.storage
 
 # --- DEFAULT FIELD ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
