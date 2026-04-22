@@ -1,13 +1,15 @@
 from django.db import models
-from django.contrib.auth.models import User # Diperlukan untuk relasi akun penulis
+from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField 
-from django.db.models.signals import post_save # Untuk Signal otomatis
-from django.dispatch import receiver # Untuk Signal otomatis
+from django.db.models.signals import post_save 
+from django.dispatch import receiver 
+from cloudinary.models import CloudinaryField # <--- IMPORT WAJIB
 
 # --- MODEL PROFIL PENULIS (UNTUK FOTO & BIO) ---
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    foto = models.ImageField(upload_to='profile_pics/', default='default.png', blank=True, null=True)
+    # Pakai CloudinaryField, default langsung ke nama file di Cloudinary Home
+    foto = CloudinaryField('image', folder='profile_pics/', default='default.png', blank=True, null=True)
     bio = models.TextField(max_length=500, blank=True)
 
     def __str__(self):
@@ -25,10 +27,8 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 class Karya(models.Model):
-    # --- FITUR MULTI-PENULIS: RELASI KE AKUN USER ---
     penulis_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='daftar_karya', null=True, blank=True)
     
-    # 1. Pilihan kategori
     KATEGORI_CHOICES = [
         ('pidana', 'Hukum Pidana'),
         ('perdata', 'Hukum Perdata'),
@@ -37,16 +37,17 @@ class Karya(models.Model):
     ]
 
     judul = models.CharField(max_length=200)
-    penulis = models.CharField(max_length=100) # Tetap ada sebagai nama tampilan
+    penulis = models.CharField(max_length=100)
     
     isi = RichTextField() 
-    gambar = models.ImageField(upload_to='naskah/', blank=True, null=True)
+    # Ganti ke CloudinaryField
+    gambar = CloudinaryField('image', folder='naskah/', blank=True, null=True)
     
     kategori = models.CharField(max_length=20, choices=KATEGORI_CHOICES, default='pidana')
     is_published = models.BooleanField(default=False)
     tanggal_terbit = models.DateTimeField(auto_now_add=True)
 
-    # --- FITUR BARU: UPLOAD JURNAL PDF ---
+    # Untuk PDF tetep pakai FileField (Cloudinary free tier fokus ke gambar/video)
     file_pdf = models.FileField(upload_to='jurnal_pdf/', blank=True, null=True)
     is_jurnal_ilmiah = models.BooleanField(default=False) 
     
@@ -57,7 +58,8 @@ class Karya(models.Model):
 class Berita(models.Model):
     judul = models.CharField(max_length=200)
     isi = RichTextField() 
-    gambar = models.ImageField(upload_to='berita/', blank=True, null=True)
+    # Ganti ke CloudinaryField
+    gambar = CloudinaryField('image', folder='berita/', blank=True, null=True)
     tanggal_post = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

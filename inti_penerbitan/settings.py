@@ -100,11 +100,37 @@ USE_TZ = True
 
 
 # --- STATIC & MEDIA FILES ---
+
+# 1. Tambahkan import ini di bagian atas atau tepat di atas settingan media
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# 2. Konfigurasi Cloudinary
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dr9cnsucv',
+    'API_KEY': '432311462277711',
+    'API_SECRET': 'W_0iLFEoPsn_AFwBbPOvth5m9gU'
+}
+
+# 3. WAJIB: Panggil config secara eksplisit agar CloudinaryField bisa baca cloud_name
+cloudinary.config( 
+  cloud_name = CLOUDINARY_STORAGE['CLOUD_NAME'], 
+  api_key = CLOUDINARY_STORAGE['API_KEY'], 
+  api_secret = CLOUDINARY_STORAGE['API_SECRET'],
+  secure = True
+)
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/media/'
 # Settingan untuk mengumpulkan semua static file ke satu folder (Wajib buat Deployment)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -112,8 +138,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Setting Media untuk gambar/upload file
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dr9cnsucv',
+    'API_KEY': '432311462277711',
+    'API_SECRET': 'W_0iLFEoPsn_AFwBbPOvth5m9gU'
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/media/' # Tambahin ini ya Cil
 
 
 # --- DEFAULT FIELD ---
