@@ -293,11 +293,11 @@
                     <h1 class="article-title">{{ karya.judul }}</h1>
                     
                 {% if karya.file_pdf %}
-    {# Kita pakai Public ID langsung karena file lo tersimpan dengan ekstensi di dalam ID #}
-    <a href="https://res.cloudinary.com/dr9cnsucv/raw/upload/fl_attachment/{{ karya.file_pdf }}" 
-   class="btn-download-pdf shadow-sm">
-    <i class="fa-solid fa-file-pdf me-2"></i> UNDUH NASKAH LENGKAP (PDF)
-</a>
+    {% if karya.file_pdf %}
+    <a href="https://res.cloudinary.com/dr9cnsucv/image/upload/fl_attachment/{{ karya.file_pdf }}.pdf" 
+       class="btn-download-pdf shadow-sm">
+        <i class="fa-solid fa-file-pdf me-2"></i> UNDUH NASKAH LENGKAP (PDF)
+    </a>
 {% endif %}
 
                     <div class="article-meta">
