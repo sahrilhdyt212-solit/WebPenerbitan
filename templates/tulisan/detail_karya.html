@@ -294,7 +294,8 @@
                     
                 {% if karya.file_pdf %}
     {# Kita pakai Public ID langsung karena file lo tersimpan dengan ekstensi di dalam ID #}
-    <a href="https://res.cloudinary.com/dr9cnsucv/raw/upload/fl_attachment/{{ karya.file_pdf|cut:'jurnal_pdf/' }}" class="btn-download-pdf shadow-sm">
+    <a href="https://res.cloudinary.com/dr9cnsucv/raw/upload/fl_attachment/{{ karya.file_pdf }}" 
+   class="btn-download-pdf shadow-sm">
     <i class="fa-solid fa-file-pdf me-2"></i> UNDUH NASKAH LENGKAP (PDF)
 </a>
 {% endif %}
