@@ -241,7 +241,7 @@
                 <a href="{% url 'edit_karya' karya.id %}" class="btn-action-edit">
                     <i class="fa-solid fa-pen-to-square me-1"></i> Lanjutkan Menulis
                 </a>
-                <a href="{% url 'hapus_karya' karya.id %}" class="btn-action-delete" onclick="return confirm('Apakah Mas yakin ingin menghapus naskah ini?')">
+                <a href="{% url 'hapus_karya' karya.id %}" class="btn-action-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus naskah ini?')">
                     <i class="fa-solid fa-trash-can me-1"></i> Hapus
                 </a>
               </div>
@@ -249,7 +249,7 @@
             {% empty %}
             <div class="bg-white text-center py-5 rounded-4 shadow-sm">
               <i class="fa-solid fa-folder-open mb-3" style="font-size: 3rem; color: #ddd;"></i>
-              <p class="text-muted">Gudang draf Mas masih kosong.</p>
+              <p class="text-muted">Gudang draf Anda masih kosong.</p>
               <a href="{% url 'tambah_karya' %}" class="btn btn-primary px-4 fw-bold" style="background-color: var(--ho-navy); border: none; border-radius: 20px;">Mulai Menulis Gagasan Baru</a>
             </div>
             {% endfor %}
@@ -262,7 +262,7 @@
                 <i class="fa-solid fa-user-tie" style="font-size: 1.8rem; color: var(--ho-navy);"></i>
             </div>
             <h6 class="fw-bold">{{ user.username }}</h6>
-            <p class="small text-muted mb-0">Kontributor Hukum</p>
+            <p class="small text-muted mb-0">Kontributor Sosial Literasi</p>
             <hr>
             <div class="d-flex justify-content-between small px-3">
                 <span>Total Draf:</span>
@@ -273,7 +273,7 @@
           <div class="sidebar-box shadow-sm">
             <h5 class="sidebar-title fw-bold" style="font-size: 0.9rem; color: var(--ho-navy);">Informasi Internal</h5>
             <p class="small text-muted" style="line-height: 1.8">
-              Naskah di halaman ini <strong>belum bisa diakses publik</strong>. Gunakan ruang ini untuk menyempurnakan argumen hukum Mas sebelum diterbitkan secara resmi.
+              Naskah di halaman ini <strong>belum bisa diakses publik</strong>. Gunakan ruang ini untuk menyempurnakan artikel/jurnal hukum anda sebelum diterbitkan secara resmi.
             </p>
           </div>
         </div>
@@ -283,7 +283,7 @@
     <footer class="footer text-center">
       <div class="container">
         <p class="mb-1" style="letter-spacing: 2px"><strong>SOSIAL LITERASI JOURNAL</strong></p>
-        <p class="small text-white-50">Ekosistem Reaverse Intelektual</p>
+        <p class="small text-white-50">Temukan Petualangan Hukum</p>
         <hr style="border-color: rgba(255, 255, 255, 0.1); width: 30%; margin: 20px auto;" />
         <p class="small mb-0 opacity-50">&copy; 2026. All Rights Reserved.</p>
       </div>

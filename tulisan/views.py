@@ -7,6 +7,18 @@ from django.http import HttpResponseForbidden # Tambahan untuk keamanan
 from django.contrib.auth.models import User # Tambahan untuk profil
 from .models import Karya, Berita, Komentar
 from .forms import KaryaForm
+from django.shortcuts import render
+from .models import Berita
+
+#---- BERITA-------
+def daftar_karya_view(request):
+    # Ambil semua data berita dari database
+    berita_list = Berita.objects.all().order_by('-id') 
+    
+    # Render ke file yang lagi kamu edit di screenshot tadi
+    return render(request, 'tulisan/daftar_karya.html', {
+        'berita_list': berita_list
+    })
 
 # --- 1. HALAMAN DEPAN (Fokus Artikel/Opini) ---
 def daftar_karya(request):
