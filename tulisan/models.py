@@ -48,7 +48,7 @@ class Karya(models.Model):
     tanggal_terbit = models.DateTimeField(auto_now_add=True)
 
     # Untuk PDF tetep pakai FileField (Cloudinary free tier fokus ke gambar/video)
-    file_pdf = models.FileField(upload_to='jurnal_pdf/', blank=True, null=True)
+    file_pdf = CloudinaryField('raw', folder='jurnal_pdf/', blank=True, null=True)
     is_jurnal_ilmiah = models.BooleanField(default=False) 
     
     def __str__(self):
