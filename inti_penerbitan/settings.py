@@ -29,8 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'cloudinary_storage',
-    'django.contrib.staticfiles',
     'cloudinary',
+    'django.contrib.staticfiles',
     'ckeditor', # Rich Text Editor
     'tulisan',  # App lo
 ]
@@ -112,6 +112,7 @@ cloudinary.config(
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.RawMediaCloudinaryStorage'
 MEDIA_URL = '/media/'
+import cloudinary_storage.storage
 
 # --- DEFAULT FIELD ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
