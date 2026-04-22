@@ -293,10 +293,9 @@
                     <h1 class="article-title">{{ karya.judul }}</h1>
                     
                     {% if karya.file_pdf %}
-    {# Gunakan atribut download untuk memaksa browser mengunduh, bukan cuma buka tab baru #}
-    <a href="{{ karya.file_pdf.url }}" download="{{ karya.judul|slugify }}.pdf" class="btn-download-pdf shadow-sm" target="_blank">
-    <i class="fa-solid fa-file-pdf me-2"></i> UNDUH NASKAH LENGKAP (PDF)
-</a>
+    <a href="https://res.cloudinary.com/dr9cnsucv/raw/upload/fl_attachment/{{ karya.file_pdf.public_id }}" class="btn-download-pdf shadow-sm">
+        <i class="fa-solid fa-file-pdf me-2"></i> UNDUH NASKAH LENGKAP (PDF)
+    </a>
 {% endif %}
 
                     <div class="article-meta">
