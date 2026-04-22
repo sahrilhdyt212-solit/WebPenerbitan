@@ -7,7 +7,7 @@ from django.dispatch import receiver # Untuk Signal otomatis
 # --- MODEL PROFIL PENULIS (UNTUK FOTO & BIO) ---
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    foto = models.ImageField(upload_to='profile_pics/', default='profile_pics/default.png', blank=True, null=True)
+    foto = models.ImageField(upload_to='profile_pics/', default='default.png', blank=True, null=True)
     bio = models.TextField(max_length=500, blank=True)
 
     def __str__(self):
