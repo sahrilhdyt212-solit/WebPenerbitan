@@ -8,8 +8,13 @@ class KaryaAdmin(admin.ModelAdmin):
     search_fields = ('judul', 'penulis')
 
 class KomentarAdmin(admin.ModelAdmin):
-    list_display = ('nama', 'karya', 'tanggal_tambah')
-    list_filter = ('tanggal_tambah',)
+    # 'is_approved' dimunculin biar kelihatan mana yang udah tayang, mana yang belum
+    list_display = ('nama', 'karya', 'is_approved', 'tanggal_tambah') 
+    
+    # Baris sakti: biar lo bisa centang/uncentang langsung di daftar tanpa klik detail
+    list_editable = ('is_approved',) 
+    
+    list_filter = ('is_approved', 'tanggal_tambah')
     search_fields = ('nama', 'isi')
 
 # Daftarkan semua model ke Admin

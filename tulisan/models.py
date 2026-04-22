@@ -71,6 +71,7 @@ class Komentar(models.Model):
     nama = models.CharField(max_length=100)
     isi = models.TextField() 
     tanggal_tambah = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Komentar oleh {self.nama} di {self.karya.judul}"
+        return f"Komen dari {self.nama}"

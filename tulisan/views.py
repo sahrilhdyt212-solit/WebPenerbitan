@@ -75,11 +75,13 @@ def detail_karya(request, id):
         nama_in = request.POST.get('nama')
         isi_in = request.POST.get('isi')
         if nama_in and isi_in:
+            # Komentar baru otomatis is_approved=False karena default di models
             Komentar.objects.create(karya=karya, nama=nama_in, isi=isi_in)
-            messages.success(request, "Komentar kamu berhasil dikirim!")
+            messages.success(request, "Komentar kamu berhasil dikirim! Menunggu moderasi admin.")
             return redirect('detail_karya', id=id)
 
-    komentar_list = karya.komentars.all().order_by('-tanggal_tambah')
+    # MODIFIKASI: Hanya tampilkan komentar yang sudah disetujui (is_approved=True)
+    komentar_list = karya.komentars.filter(is_approved=True).order_by('-tanggal_tambah')
     
     baca_juga = Karya.objects.filter(
         kategori=karya.kategori, 
