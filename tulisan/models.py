@@ -34,6 +34,9 @@ class Karya(models.Model):
         ('perdata', 'Hukum Perdata'),
         ('htn', 'Hukum Tata Negara'),
         ('han', 'Hukum Administrasi Negara'),
+        ('umum', 'Umum'),
+        ('polkum', 'Politik Hukum'),
+        ('politik', 'Politik'),
     ]
 
     judul = models.CharField(max_length=200)

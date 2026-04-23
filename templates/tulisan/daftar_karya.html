@@ -401,35 +401,51 @@
             <div class="sidebar-box">
                 <h5 class="sidebar-title"><i class="fa-solid fa-tags me-2 text-accent"></i>Kategori Hukum</h5>
                 <ul class="list-unstyled small">
-                    <li class="border-bottom">
-                        <a href="?kategori=pidana" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'pidana' %}active{% endif %}">
-                            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Pidana
-                        </a>
-                    </li>
-                    <li class="border-bottom">
-                        <a href="?kategori=perdata" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'perdata' %}active{% endif %}">
-                            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Perdata
-                        </a>
-                    </li>
-                    <li class="border-bottom">
-                        <a href="?kategori=htn" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'htn' %}active{% endif %}">
-                            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Tata Negara
-                        </a>
-                    </li>
-                    <li class="mb-0">
-                        <a href="?kategori=han" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'han' %}active{% endif %}">
-                            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Administrasi Negara
-                        </a>
-                    </li>
-                    
-                    {% if kategori_aktif %}
-                    <li class="mt-4">
-                        <a href="{% url 'home' %}" class="btn btn-sm btn-outline-secondary w-100 rounded-pill" style="font-size: 0.75rem;">
-                            <i class="fa-solid fa-rotate-left me-1"></i>RESET FILTER
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
+    <li class="border-bottom">
+        <a href="?kategori=pidana" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'pidana' %}active{% endif %}">
+            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Pidana
+        </a>
+    </li>
+    <li class="border-bottom">
+        <a href="?kategori=perdata" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'perdata' %}active{% endif %}">
+            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Perdata
+        </a>
+    </li>
+    <li class="border-bottom">
+        <a href="?kategori=htn" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'htn' %}active{% endif %}">
+            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Tata Negara
+        </a>
+    </li>
+    <li class="border-bottom">
+        <a href="?kategori=han" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'han' %}active{% endif %}">
+            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Hukum Administrasi Negara
+        </a>
+    </li>
+    
+    <li class="border-bottom">
+        <a href="?kategori=polkum" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'polkum' %}active{% endif %}">
+            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Politik Hukum
+        </a>
+    </li>
+    <li class="border-bottom">
+        <a href="?kategori=politik" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'politik' %}active{% endif %}">
+            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Politik
+        </a>
+    </li>
+    <li class="border-bottom">
+        <a href="?kategori=umum" class="text-decoration-none text-dark category-link {% if kategori_aktif == 'umum' %}active{% endif %}">
+            <i class="fa-solid fa-angle-right me-2 opacity-50"></i>Umum
+        </a>
+    </li>
+
+    {% if kategori_aktif %}
+    <li class="mt-4">
+        <a href="{% url 'home' %}" class="btn btn-sm btn-outline-secondary w-100 rounded-pill" style="font-size: 0.75rem;">
+            <i class="fa-solid fa-rotate-left me-1"></i>RESET FILTER
+        </a>
+    </li>
+    {% endif %}
+</ul>
             </div>
 
             <div class="sidebar-box">
